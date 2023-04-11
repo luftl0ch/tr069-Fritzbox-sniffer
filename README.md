@@ -9,7 +9,10 @@ Script to sniff the tr069 communication between your Fritzbox and your provider.
 3. Set executable bit `chmod +x tr069-fritzdump.sh`
 4. Start `./tr069-fritzdump.sh`
 
-After a few minutes(!) you should find a fritzdump.pcap capture in the script directory.
+After a **few minutes**(!) you should find a fritzdump.pcap capture in the script directory.
+
+With curl you can make a request to test the script `curl EXTERNAL_FRITZ_IP:8089` - 
+Make sure that the request reaches the Fritzbox via an external network. (mobile network, VPS server, ...)
 
 
 ## Comments
