@@ -1,10 +1,10 @@
 #!/bin/bash
-# Something I have stolen here. Thanks to all contributors of the following Script!
+# Some of the code i stole from the fritzdump script. Thanks to all contributors of the Script!
 #https://github.com/ntop/ntopng/blob/dev/tools/fritzdump.sh
 
 # !!! Configure the credentials. If you use password-only authentication use 'dslf-config' as username.
-FRITZUSER=CHANGEME!
-FRITZPWD=CHANGEME!
+FRITZUSER=
+FRITZPWD=
 
 # (Everything down here is optional)
 #-------------------------------------------
@@ -14,8 +14,9 @@ FRITZIP=http://192.168.178.1
 # This should be the WAN Interface of the Fritzbox (7490)
 IFACE="2-1"
 
-# Port to monitor Traffic. tr069 works by default on port 8089
-tcpport="8089"
+# The tr069 port on my Router (CPE) whos reachable from the WAN listen on Port 8089. The provider server (ACS) listening on 8443.
+cpeport="8089"
+acsport="8443"
 #-------------------------------------------
 SIDFILE="/tmp/fritz.sid"
 dumpdirectory="/tmp/fritzdumps"
@@ -77,7 +78,7 @@ while true; do
       echo "Capturing traffic on Fritz!Box interface $IFACE ..." 1>&2
 
       # Start Sniff
-      wget --no-check-certificate -qO- $FRITZIP/cgi-bin/capture_notimeout?ifaceorminor=$IFACE\&snaplen=\&capture=Start\&sid=$SID |  tshark -t ad -w $dumpdirectory/fritzsniffraw.pcap  -b duration:59 -i  - &
+      wget --no-check-certificate -qO- $FRITZIP/cgi-bin/capture_notimeout?ifaceorminor=$IFACE\&snaplen=\&capture=Start\&sid=$SID |  dumpcap -t ad -w $dumpdirectory/fritzsniffraw.pcap  -b duration:59 -i  - &
   i=0
 
 	fi
